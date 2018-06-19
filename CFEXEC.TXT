@@ -1,0 +1,57 @@
+
+CFEXEC.DOC
+----------
+
+This program was written so I could get an idea of how processes
+work. In this example, lines of text are read from stdin until
+EOF.  Lines whose first word is "CL" are assumed to be attempts to
+compile C source files. A child process is started with the CL.EXE
+command, the rest of the line containing "CL" being the arguments.
+I used MS C 5.1.
+
+
+CFEXEC take 2 arguments :
+  Arg 1>  1 = run all children together
+	  2 = try to keep 2 children running at a time
+  Arg 2>  LONG = Time in milsec to wait between starts of children
+		 in Arg 1 Mode 1. Does not apply to Arg 1 Mode 2, but
+		 still needs to be included.
+
+
+Some ways to get CL input :
+  1> Type in CL command lines from keyboard.
+  2> Use MAKE :
+       A> Type MAKE /N MYFILE > MYFILE.OUT & CFEXEC 1 5000  < MYFILE.OUT
+
+		     -or-
+
+       B> Type MAKE /N MYFILE | CFEXEC 1 5000
+	  (This method is shown in CFILT.CMD)
+
+
+CFILT.CMD
+----------
+Command file to automate testing of CFEXEC.
+CFILT takes 3 arguments :
+  %1> MAKE file name
+  %2> Arg 1 Mode for CFEXEC
+  %3> Arg 2 for CFEXEC
+
+CFILT calls MAKE a second time to clean up any failed child compiles
+and do RC, LINK, IMPLIB, BIND, MAPSYM.
+
+
+Watch out for :
+---------------
+If the swap drive for OS/2 and the temp drive for CL (TMP) are the same,
+the machine may lock up if (when) that drive is consumed.
+
+Not good for programs with lots of errors ; all children write
+to screen with no serialization.
+
+
+
+
+
+
+

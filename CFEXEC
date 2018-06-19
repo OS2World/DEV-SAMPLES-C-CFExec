@@ -1,0 +1,50 @@
+# Abbreviations
+# ADD ADDITIONAL OBJECT= MACROS FOR MORE FILES
+# ALSO ADD NEEDED .C.OBJ AND LINK STATEMENTS - ADD + SIGN
+FILE      = CFEXEC
+OBJECT1   =
+BMPS      =
+PTRS      =
+CLBASE    = /c
+CLMODE    = /Lp
+CLMODEL   = /AS
+CLDEBUG   = /Ox
+CLMISC    = /G2sw /W3
+CLMATH    =
+LINKOBJ   = $(FILE)
+LINKRUN   = $* /ALIGN:16
+LINKMAP   = NUL
+LINKLIB   = /NOD SLIBCEP OS2.LIB
+LINKDEF   = $(FILE).DEF
+RCARGS    = /r
+
+
+# Inference Rules
+#
+.C.OBJ :
+     CL $(CLBASE) $(CLMODE) $(CLMODEL) $(CLDEBUG) $(CLMISC) $(CLMATH) $*.c
+
+.C.EXE :
+     LINK @$(FILE).LNK
+
+
+# C files
+#
+$(FILE).OBJ    : $(FILE).C $(FILE).DEF $(FILE)
+
+
+
+# Linker file
+#
+$(FILE).LNK    : $(FILE)
+    echo $(LINKOBJ)     >  $(FILE).LNK
+    echo $(LINKRUN)     >> $(FILE).LNK
+    echo $(LINKMAP)     >> $(FILE).LNK
+    echo $(LINKLIB)     >> $(FILE).LNK
+    echo $(LINKDEF)     >> $(FILE).LNK
+
+
+# Files
+#
+$(FILE).EXE    : $(FILE).OBJ
+
